@@ -19,9 +19,23 @@
 <body>
   <main class="mt-5">
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
-      </div>
+      <div class="text-center p-4">
+      <form >
+        <img  src="/img/login.png" alt="login" alt height="130">
+        <h2><b>Inicio de sesión</b></h2>
+        <div class="form-floating"> 
+        <p>Email:<br>
+          <input type="email" name="Email" placeholder="Email"  size="30"
+          required></p>
+        </div> 
+        <div class="form-floating"> 
+        <p>Contraseña:<br>
+          <input type="password" name="Contraseña" placeholder="Contraseña" size="30"
+          required></p>
+        </div>
+    <button class="w-10 btn btn-lg btn-primary" type="submit" onclick="goHome()">Ingresar </button>
+  </div>
+      </form>
     </div>
   </main>
   <footer class="text-muted">
