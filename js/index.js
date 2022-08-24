@@ -1,10 +1,12 @@
 var form = document.getElementById("loginForm");
 
-form.addEventListener("submit", validateForm, true);
+if(form){
+  form.addEventListener("submit", validateForm, true);
+}
 
 function validateForm(event) {
     event.preventDefault()
-   let valorEmail= document.forms ["myForm"]["email"].value;
+    let valorEmail= document.forms ["myForm"]["email"].value;
    let valorContraseña= document.forms ["myForm"]["contraseña"].value;
    if (valorEmail ==""){
        let inputEmail=document.querySelector("#emailInput")
@@ -23,8 +25,11 @@ function validateForm(event) {
         indicacionPass.style.color="red"
         indicacionPass.style.fontSize="13px"
       }
-      if(valorEmail !=="" && valorContraseña !==""){
+     if(valorEmail !=="" && valorContraseña !==""){
         window.location.href="home.html"
-      }
+      localStorage.setItem("email", valorEmail);
+       
+      }   
 }
+document.getElementById("nombreUsuario").innerHTML= localStorage.getItem("email")
 
