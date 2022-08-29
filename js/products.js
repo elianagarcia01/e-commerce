@@ -1,79 +1,151 @@
 // variable que accede al catID del local storage para cargar las distinas categorias
-var nroId= localStorage.getItem("catID")
-
+let nroId= localStorage.getItem("catID")
 //Se referencia el origen de los datos en formato Json
 const url="https://japceibal.github.io/emercado-api/cats_products/" +nroId +".json"
 
-function nombreCat(){
-    switch(nroId){
-case"101": 
-    document.getElementById("nameCat").innerHTML="Autos";
-    break;
-case"102": 
-    document.getElementById("nameCat").innerHTML="Juguetes";
-    break;
-case"103": 
-    document.getElementById("nameCat").innerHTML="Muebles";
-    break;
-case"104": 
-    document.getElementById("nameCat").innerHTML="Herramientas"; 
-    break;
-case"105": 
-    document.getElementById("nameCat").innerHTML="Computadoras";
-    break;
-case"106": 
-    document.getElementById("nameCat").innerHTML="Vestimenta";
-    break;
-case"107": 
-    document.getElementById("nameCat").innerHTML="Electrodomésticos";
-    break;
-case"108": 
-    document.getElementById("nameCat").innerHTML="Deporte";
-    break;
-case"109": 
-    document.getElementById("nameCat").innerHTML="Celulares";
-}
-}
+const categorieName= ["Autos","Juguetes","Muebles", "Herramientas","Computadoras","Vestimenta","Electrodomésticos","Deporte","Celulares"]
+let nroCatParse= parseInt(nroId)-101
+document.getElementById("nameCat").innerHTML=categorieName[nroCatParse]
 
-nombreCat()
-//función que realiza el fetch() a la url recibida y devuelve un objeto con los datos
-function showProductsList(data) {
-   // console.log(data)
-    let body=""; 
-   // console.log(data["products"].length)
-    data["products"].forEach(products => { 
-       //console.log(products)
-        body+=`
-            <div class="row">
-                <div class="col-3">
-                    <img src="${products.image}" alt="product image" class="img-thumbnail">
-                </div>
-                <div class="col">
-                    <div class="d-flex w-100 justify-content-between">
-                        <div class="mb-1">
-                        <h4>${products.name + " - " + products.currency + products.cost}</h4> 
-                        <p> ${products.description}</p> 
-                        </div>
-                        <small class="text-muted"> ${products.soldCount}  vendidos</small> 
-                    </div>
+const ORDER_ASC_BY_COST = "AZ";
+const ORDER_DESC_BY_COST = "ZA";
+const ORDER_BY_SOLD_COUNT = "Rel.";
+let currentProductsArray = [];
+let currentSortCriteria = undefined;
+let minCount = undefined;
+let maxCount = undefined;
 
-                </div>
-            </div>
-        </div>
-        `
-       
-    });
-    
-    document.getElementById("data").innerHTML = body;
-   // console.log(body)
+
+function sortProducts(criteria, array){
+    let result = [];
+    if (criteria === ORDER_ASC_BY_COST)
+    {
+        result = array.sort(function(a, b) {
+            if ( a.cost < b.cost ){ return -1; }
+            if ( a.cost > b.cost ){ return 1; }
+            return 0;
+        });
+    }else if (criteria === ORDER_DESC_BY_COST){
+        result = array.sort(function(a, b) {
+            if ( a.cost > b.cost ){ return -1; }
+            if ( a.cost < b.cost){ return 1; }
+            return 0;
+        });
+    }else if (criteria === ORDER_BY_SOLD_COUNT){
+        result = array.sort(function(a, b) {
+            let aCount = parseInt(a.soldCount);
+            let bCount = parseInt(b.soldCount);
+
+            if ( aCount > bCount ){ return -1; }
+            if ( aCount < bCount ){ return 1; }
+            return 0;
+        });
     }
 
+    return result;
+}
+
+//función que realiza el fetch() a la url recibida y devuelve un objeto con los datos
+function showProductsList() {
+     let body=""; 
+    // console.log(data["products"].length)
+    //currentProductsArray= data["products"]
+    currentProductsArray.forEach(products => { 
+  
+        if (((minCount == undefined) || (minCount != undefined && parseInt(products.cost) >= minCount)) &&
+        ((maxCount == undefined) || (maxCount != undefined && parseInt(products.cost) <= maxCount))){
+     
+         body+=`
+             <div class="row">
+                 <div class="col-3">
+                     <img src="${products.image}" alt="product image" class="img-thumbnail">
+                 </div>
+                 <div class="col">
+                     <div class="d-flex w-100 justify-content-between">
+                         <div class="mb-1">
+                         <h4>${products.name + " - " + products.currency + products.cost}</h4> 
+                         <p> ${products.description}</p> 
+                         </div>
+                         <small class="text-muted"> ${products.soldCount}  vendidos</small> 
+                     </div>
  
-    document.addEventListener("DOMContentLoaded", function(e){
-        fetch(url) 
-        .then(response => response.json())
-        .then(data => {
-            return showProductsList(data);
-        })
-        .catch(error => console.log(error))
-    });
+                 </div>
+             </div>
+         </div>
+         `
+     }
+     });
+
+     document.getElementById("data").innerHTML = body;
+    // console.log(body)
+     }
+ 
+     function sortAndShowProducts(sortCriteria, productsArray){
+         currentSortCriteria = sortCriteria;
+     
+         if(productsArray != undefined){
+             currentProductsArray = productsArray;
+         }
+     
+         currentProductsArray = sortProducts(currentSortCriteria, currentProductsArray);
+     
+         //Muestro los productos ordenados
+         showProductsList(currentProductsArray);
+        //console.log(currentProductsArray)
+     }
+  
+     document.addEventListener("DOMContentLoaded", function(e){
+         fetch(url) 
+         .then(response => response.json())
+         .then(data => { 
+            currentProductsArray= data["products"]
+             return showProductsList();
+         })
+         .catch(error => console.log(error))
+   
+
+        document.getElementById("sortAsc").addEventListener("click", function(){
+            sortAndShowProducts(ORDER_ASC_BY_COST);
+        });
+    
+        document.getElementById("sortDesc").addEventListener("click", function(){
+            sortAndShowProducts(ORDER_DESC_BY_COST);
+        });
+    
+        document.getElementById("sortByCount").addEventListener("click", function(){
+            sortAndShowProducts(ORDER_BY_SOLD_COUNT);
+        });
+
+        document.getElementById("clearRangeFilter").addEventListener("click", function(){
+            document.getElementById("rangeFilterCountMin").value = "";
+            document.getElementById("rangeFilterCountMax").value = "";
+    
+            minCount = undefined;
+            maxCount = undefined;
+    
+            showProductsList();
+        });
+
+        document.getElementById("rangeFilterCount").addEventListener("click", function(){
+            //Obtengo el mínimo y máximo de los intervalos para filtrar por cantidad
+            //de productos por categoría.
+            minCount = document.getElementById("rangeFilterCountMin").value;
+            maxCount = document.getElementById("rangeFilterCountMax").value;
+            console.log( minCount)
+            if ((minCount != undefined) && (minCount != "") && (parseInt(minCount)) >= 0){
+                minCount = parseInt(minCount);
+            }
+            else{
+                minCount = undefined;
+            }
+    
+            if ((maxCount != undefined) && (maxCount != "") && (parseInt(maxCount)) >= 0){
+                maxCount = parseInt(maxCount);
+            }
+            else{
+                maxCount = undefined;
+            }
+    
+            showProductsList();
+        });
+ });
