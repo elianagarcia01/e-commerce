@@ -98,8 +98,8 @@ function showProductsList() {
          fetch(url) 
          .then(response => response.json())
          .then(data => { 
-            currentProductsArray= data["products"]
-             return showProductsList();
+            currentProductsArray= data["products"]           
+            return showProductsList();
          })
          .catch(error => console.log(error))
    
@@ -127,8 +127,8 @@ function showProductsList() {
         });
 
         document.getElementById("rangeFilterCount").addEventListener("click", function(){
-            //Obtengo el mínimo y máximo de los intervalos para filtrar por cantidad
-            //de productos por categoría.
+         //Obtengo el mínimo y máximo de los intervalos para filtrar por precio 
+         //de los productos 
             minCount = document.getElementById("rangeFilterCountMin").value;
             maxCount = document.getElementById("rangeFilterCountMax").value;
             console.log( minCount)
