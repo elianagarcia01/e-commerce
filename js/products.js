@@ -45,16 +45,27 @@ function sortProducts(criteria, array){
     return result;
 }
 
+// traigo el input del buscador
+const buscadora= document.querySelector("#buscador");
+const resultado= document.querySelector ("#data")
+
 //función que realiza el fetch() a la url recibida y devuelve un objeto con los datos
 function showProductsList() {
      let body=""; 
     // console.log(data["products"].length)
     //currentProductsArray= data["products"]
     currentProductsArray.forEach(products => { 
-  
-        if (((minCount == undefined) || (minCount != undefined && parseInt(products.cost) >= minCount)) &&
-        ((maxCount == undefined) || (maxCount != undefined && parseInt(products.cost) <= maxCount))){
-     
+
+        //datos para el buscador
+        const text= buscadora.value.toLowerCase();
+        let name= products.name.toLowerCase();
+        let description= products.description.toLowerCase();
+        let logicSearch= name.indexOf(text) !== -1 || description.indexOf(text) !== -1 
+        
+        let logicMinCount= (minCount == undefined) || (minCount != undefined && parseInt(products.cost) >= minCount)
+        let logicMaxCount= (maxCount == undefined) || (maxCount != undefined && parseInt(products.cost) <= maxCount)
+        
+        if ( logicMinCount && logicMaxCount && logicSearch){
          body+=`
              <div class="row">
                  <div class="col-3">
@@ -74,12 +85,27 @@ function showProductsList() {
          </div>
          `
      }
+    
      });
-
-     document.getElementById("data").innerHTML = body;
+     resultado.innerHTML = body;
     // console.log(body)
      }
- 
+
+ // funcion que va a ser utilizada para el input del buscador
+     const searchProduct = ()=>{
+         //console.log(buscadora.value);
+         showProductsList()
+         if(resultado.innerHTML=== ""){
+             resultado.innerHTML =`
+             Producto no encontrado...
+             ` 
+         }
+     }
+
+     //cada vez que se escriba algo en el input, se ejecuta el evento keyup, utilizando la funcion searchProduct
+     buscadora.addEventListener("keyup", searchProduct)
+     //searchProduct()
+
      function sortAndShowProducts(sortCriteria, productsArray){
          currentSortCriteria = sortCriteria;
      
@@ -93,7 +119,8 @@ function showProductsList() {
          showProductsList(currentProductsArray);
         //console.log(currentProductsArray)
      }
-  
+
+
      document.addEventListener("DOMContentLoaded", function(e){
          fetch(url) 
          .then(response => response.json())
