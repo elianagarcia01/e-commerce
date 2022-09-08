@@ -45,6 +45,13 @@ function sortProducts(criteria, array){
     return result;
 }
 
+
+function setProdID(id) {
+    localStorage.setItem("InfoProdID", id);
+    window.location = "product-info.html"
+}
+
+
 // traigo el input del buscador
 const buscadora= document.querySelector("#buscador");
 const resultado= document.querySelector ("#data")
@@ -52,8 +59,7 @@ const resultado= document.querySelector ("#data")
 //función que realiza el fetch() a la url recibida y devuelve un objeto con los datos
 function showProductsList() {
      let body=""; 
-    // console.log(data["products"].length)
-    //currentProductsArray= data["products"]
+     
     currentProductsArray.forEach(products => { 
 
         //datos para el buscador
@@ -67,6 +73,7 @@ function showProductsList() {
         
         if ( logicMinCount && logicMaxCount && logicSearch){
          body+=`
+         <div onclick="setProdID(${products.id})" class="list-group-item list-group-item-action cursor-active">
              <div class="row">
                  <div class="col-3">
                      <img src="${products.image}" alt="product image" class="img-thumbnail">
@@ -82,6 +89,7 @@ function showProductsList() {
  
                  </div>
              </div>
+         </div>
          </div>
          `
      }
@@ -119,6 +127,7 @@ function showProductsList() {
          showProductsList(currentProductsArray);
         //console.log(currentProductsArray)
      }
+
 
 
      document.addEventListener("DOMContentLoaded", function(e){
