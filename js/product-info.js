@@ -24,7 +24,7 @@ function showProductsInfo() {
            <b> Imágenes ilustrativas </b> <br>
            
            `
-    let divImg = `<div class="row-3"  style= "display:flex ; gap:15px">`
+    let divImg = `<div class="row-3"  style= "display:flex ; gap:14px;  flex-wrap: wrap;">`
 
     productsInfo.images.forEach(imagen => {
         divImg +=
@@ -38,8 +38,15 @@ function showProductsInfo() {
 }
 
 let coments = [];
-
 function showComents() {
+
+    //Ordena los comentarios por fechas
+    coments.sort((a,b)=>{
+        if (a.dateTime > b.dateTime) return -1;
+        if (a.dateTime > b.dateTime) return 1;
+        return 0;
+    })
+      
     bodyCom = ""
 
     bodyCom += `<br> <h4>Comentarios</h4>`
@@ -48,7 +55,7 @@ function showComents() {
         let score = 5 - com.score
 
         bodyCom += `
-        <div class="list-group-item ">
+        <div class="list-group-item">
 
         <p> <b>${com.user + "</b> - " + com.dateTime + " -"}  
         ${`<span class="fa fa-star checked"></span>`.repeat(com.score) +
@@ -60,27 +67,6 @@ function showComents() {
         </div>
         `
     })
-    bodyCom +=
-        `<div>
-        <form action="">
-        <br>
-          <h4>Comentar</h4>
-          <p>Tu opinión:</p>
-          <textarea id="review" rows="4" cols="50">
-          </textarea>
-          <br>
-          <p>Tu puntuación:<br> 
-            <select name="select" style="width: 150px">
-              <option> 1</option>
-              <option> 2</option>
-              <option> 3</option>
-              <option> 4</option>
-              <option> 5</option>
-            </select></p> 
-          <button class="w-10 btn btn-sm btn-primary">Enviar</button>
-        </form>
-      </div>
-        `
     resultadoComents.innerHTML = bodyCom;
 }
 
@@ -99,8 +85,100 @@ document.addEventListener("DOMContentLoaded", function (e) {
     getJSONData(urlInfoCom).then(function (resultObj) {
         if (resultObj.status === "ok") {
             coments = resultObj.data
-            //console.log(productsInfo)
+            //console.log(coments)
+
+            
+
             showComents()
         }
     });
 })
+
+
+//DESAFIATE
+
+
+review = document.getElementById("review");
+enviar = document.getElementById("enviar");
+
+
+//FECHA
+var today = new Date();
+var now = today.toLocaleString();
+
+function addComent() {
+
+//ESTRELLAS
+const select = document.getElementById("select");
+const option = select.options[select.selectedIndex];
+const scoreReview = 5 - option.text
+
+    localStorage.setItem("review", review.value);
+
+    resultadoComents.innerHTML += `
+    <div class="list-group-item">
+    <p> <b>${localStorage.getItem("email") + "</b> - " + now + " -"}  
+        ${`<span class="fa fa-star checked"></span>`.repeat(option.text) +
+            `<span class="fa-regular fa-star"></span>`.repeat(scoreReview)}
+            
+        </p>
+        <p>
+        ${localStorage.getItem("review")}
+        </p>
+        </div>
+    `;
+    review.value = "";
+}
+
+enviar.addEventListener("click",addComent)
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+review = document.getElementById("review");
+enviar = document.getElementById("enviar");
+contenedor = document.getElementById("newComentContainer");
+
+
+
+let newComent = [];
+const coment = JSON.parse(localStorage.getItem("itemComent"));
+
+if (coment !== null) {
+    newComent = coment
+}
+
+
+if (newComent.length > 0) {
+    for (let i = 0; i < newComent.length; i++) {
+        contenedor.innerHTML += `<div class="list-group-item">${coment[i]}</div>`;
+    }
+}
+
+
+enviar.addEventListener("click", (evt) => {
+    newComent.push(review.value);
+    localStorage.setItem("itemComent", JSON.stringify(newComent));
+    if (review.value) {
+        localStorage.setItem("item", item.value);
+        contenedor.innerHTML += `
+        
+        <div class="list-group-item">
+        ${localStorage.getItem("item")}
+        </div>`;
+        review.value = "";
+    }
+});
+
+*/
+
