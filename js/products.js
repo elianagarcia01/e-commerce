@@ -44,7 +44,8 @@ function sortProducts(criteria, array) {
     return result;
 }
 
-
+//Funcion que utiliza un id de un producto. 
+//lo que hace es guardar el id en el localstorage y redireccionar al html de info
 function setProdID(id) {
     localStorage.setItem("InfoProdID", id);
     window.location = "product-info.html"

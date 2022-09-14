@@ -41,15 +41,17 @@ let coments = [];
 function showComents() {
 
     //Ordena los comentarios por fechas
-    coments.sort((a,b)=>{
+    coments.sort((a, b) => {
         if (a.dateTime > b.dateTime) return -1;
         if (a.dateTime > b.dateTime) return 1;
         return 0;
     })
-      
+
     bodyCom = ""
 
-    bodyCom += `<br> <h4>Comentarios</h4>`
+    bodyCom += `<br> <h4>Comentarios</h4>
+    <div id="newComent"></div>
+    `
 
     coments.forEach(com => {
         let score = 5 - com.score
@@ -86,9 +88,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (resultObj.status === "ok") {
             coments = resultObj.data
             //console.log(coments)
-
-            
-
             showComents()
         }
     });
@@ -104,22 +103,24 @@ enviar = document.getElementById("enviar");
 
 //FECHA
 var today = new Date();
-var now = today.toLocaleString();
+var now = today.toLocaleString("af-ZA");
+
 
 function addComent() {
 
-//ESTRELLAS
-const select = document.getElementById("select");
-const option = select.options[select.selectedIndex];
-const scoreReview = 5 - option.text
+    //ESTRELLAS
+    const newComentContainer = document.getElementById("newComent");
+    const select = document.getElementById("select");
+    const option = select.options[select.selectedIndex];
+    const scoreReview = 5 - option.text
 
     localStorage.setItem("review", review.value);
 
-    resultadoComents.innerHTML += `
+    newComentContainer.innerHTML += `
     <div class="list-group-item">
     <p> <b>${localStorage.getItem("email") + "</b> - " + now + " -"}  
         ${`<span class="fa fa-star checked"></span>`.repeat(option.text) +
-            `<span class="fa-regular fa-star"></span>`.repeat(scoreReview)}
+        `<span class="fa-regular fa-star"></span>`.repeat(scoreReview)}
             
         </p>
         <p>
@@ -130,7 +131,7 @@ const scoreReview = 5 - option.text
     review.value = "";
 }
 
-enviar.addEventListener("click",addComent)
+enviar.addEventListener("click", addComent)
 
 
 
@@ -181,4 +182,3 @@ enviar.addEventListener("click", (evt) => {
 });
 
 */
-
