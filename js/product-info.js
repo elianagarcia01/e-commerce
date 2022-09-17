@@ -94,8 +94,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 })
 
 
-//DESAFIATE
-
 
 review = document.getElementById("review");
 enviar = document.getElementById("enviar");
@@ -132,53 +130,3 @@ function addComent() {
 }
 
 enviar.addEventListener("click", addComent)
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-review = document.getElementById("review");
-enviar = document.getElementById("enviar");
-contenedor = document.getElementById("newComentContainer");
-
-
-
-let newComent = [];
-const coment = JSON.parse(localStorage.getItem("itemComent"));
-
-if (coment !== null) {
-    newComent = coment
-}
-
-
-if (newComent.length > 0) {
-    for (let i = 0; i < newComent.length; i++) {
-        contenedor.innerHTML += `<div class="list-group-item">${coment[i]}</div>`;
-    }
-}
-
-
-enviar.addEventListener("click", (evt) => {
-    newComent.push(review.value);
-    localStorage.setItem("itemComent", JSON.stringify(newComent));
-    if (review.value) {
-        localStorage.setItem("item", item.value);
-        contenedor.innerHTML += `
-        
-        <div class="list-group-item">
-        ${localStorage.getItem("item")}
-        </div>`;
-        review.value = "";
-    }
-});
-
-*/
