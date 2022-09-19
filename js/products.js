@@ -2,10 +2,7 @@
 let nroId = localStorage.getItem("catID")
 //Se referencia el origen de los datos en formato Json
 const url = "https://japceibal.github.io/emercado-api/cats_products/" + nroId + ".json"
-
-const categorieName = ["Autos", "Juguetes", "Muebles", "Herramientas", "Computadoras", "Vestimenta", "Electrodomésticos", "Deporte", "Celulares"]
-let nroCatParse = parseInt(nroId) - 101
-document.getElementById("nameCat").innerHTML = categorieName[nroCatParse]
+const nameCat= document.getElementById("nameCat")
 
 const ORDER_ASC_BY_COST = "AZ";
 const ORDER_DESC_BY_COST = "ZA";
@@ -50,7 +47,6 @@ function setProdID(id) {
     localStorage.setItem("InfoProdID", id);
     window.location = "product-info.html"
 }
-
 
 // traigo el input del buscador
 const buscadora = document.querySelector("#buscador");
@@ -128,12 +124,11 @@ function sortAndShowProducts(sortCriteria, productsArray) {
     //console.log(currentProductsArray)
 }
 
-
-
 document.addEventListener("DOMContentLoaded", function (e) {
     fetch(url)
         .then(response => response.json())
         .then(data => {
+            nameCat.innerHTML= `${data.catName}`
             currentProductsArray = data["products"]
             return showProductsList();
         })
