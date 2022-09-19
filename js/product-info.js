@@ -5,6 +5,13 @@ const urlInfoCom = PRODUCT_INFO_COMMENTS_URL + nroId + EXT_TYPE
 
 const resultadoInfo = document.querySelector("#dataInfo")
 const resultadoComents = document.querySelector("#dataComents")
+const resultadoRelated = document.querySelector("#dataRelated")
+
+
+function setRelatedID(id) {
+    localStorage.setItem("InfoProdID", id);
+    window.location = "product-info.html"
+}
 
 let productsInfo
 
@@ -35,7 +42,24 @@ function showProductsInfo() {
     divImg += `</div>`
 
     resultadoInfo.innerHTML = bodyInfo + divImg;
-}
+
+    let bodyRelated=`
+    <hr>
+    <h4>Productos relacionados</h4> <br>
+    <div class="row-3"  style= "display:flex ; gap:14px;  flex-wrap: wrap;">`
+    productsInfo.relatedProducts.forEach(related => {
+            
+            bodyRelated += `
+            <div onclick="setRelatedID(${related.id})" class="cursor-active">
+            <img src="${related.image}" alt="product image" class="img-thumbnail" width="316px">
+            <h5>${related.name}</h5>
+            </div>
+            `
+        })
+
+        bodyRelated += `</div>`
+        resultadoRelated.innerHTML= bodyRelated 
+    }
 
 let coments = [];
 function showComents() {
