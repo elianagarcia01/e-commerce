@@ -31,5 +31,5 @@ function validateForm(event) {
        
       }   
 }
-document.getElementById("nombreUsuario").innerHTML= localStorage.getItem("email")
+
 

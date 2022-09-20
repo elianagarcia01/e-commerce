@@ -39,3 +39,28 @@ let getJSONData = function(url){
         return result;
     });
 }
+
+
+
+document.getElementById("user").innerHTML=`
+<div class="container-fluid">
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="nombreUsuario" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+         
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="nombreUsuario">
+          <li><a class="dropdown-item" href="cart.html">Mi carrito</a></li>
+          <li><a class="dropdown-item" href="my-profile.html">Mi perfil</a></li>
+          <li><a class="dropdown-item" href="index.html">Cerrar sesión</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>`
+
+document.getElementById("nombreUsuario").innerHTML= localStorage.getItem("email")
