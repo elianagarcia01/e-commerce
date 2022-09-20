@@ -7,42 +7,44 @@ const CART_INFO_URL = "https://japceibal.github.io/emercado-api/user_cart/";
 const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
 const EXT_TYPE = ".json";
 
-let showSpinner = function(){
+let showSpinner = function () {
   document.getElementById("spinner-wrapper").style.display = "block";
 }
 
-let hideSpinner = function(){
+let hideSpinner = function () {
   document.getElementById("spinner-wrapper").style.display = "none";
 }
 
-let getJSONData = function(url){
-    let result = {};
-    showSpinner();
-    return fetch(url)
+let getJSONData = function (url) {
+  let result = {};
+  showSpinner();
+  return fetch(url)
     .then(response => {
       if (response.ok) {
         return response.json();
-      }else{
+      } else {
         throw Error(response.statusText);
       }
     })
-    .then(function(response) {
-          result.status = 'ok';
-          result.data = response;
-          hideSpinner();
-          return result;
+    .then(function (response) {
+      result.status = 'ok';
+      result.data = response;
+      hideSpinner();
+      return result;
     })
-    .catch(function(error) {
-        result.status = 'error';
-        result.data = error;
-        hideSpinner();
-        return result;
+    .catch(function (error) {
+      result.status = 'error';
+      result.data = error;
+      hideSpinner();
+      return result;
     });
 }
 
+function removeUser() {
+  localStorage.removeItem("user");
+}
 
-
-document.getElementById("user").innerHTML=`
+document.getElementById("user").innerHTML = `
 <div class="container-fluid">
 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -53,14 +55,14 @@ document.getElementById("user").innerHTML=`
         <a class="nav-link dropdown-toggle" href="#" id="nombreUsuario" role="button" data-bs-toggle="dropdown" aria-expanded="false">
          
         </a>
-        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="nombreUsuario">
+        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="nombreUsuario">
           <li><a class="dropdown-item" href="cart.html">Mi carrito</a></li>
           <li><a class="dropdown-item" href="my-profile.html">Mi perfil</a></li>
-          <li><a class="dropdown-item" href="index.html">Cerrar sesión</a></li>
+          <li onclick="removeUser()"><a class="dropdown-item" href="index.html">Cerrar sesión</a></li>
         </ul>
       </li>
     </ul>
   </div>
 </div>`
 
-document.getElementById("nombreUsuario").innerHTML= localStorage.getItem("email")
+document.getElementById("nombreUsuario").innerHTML = localStorage.getItem("user")
