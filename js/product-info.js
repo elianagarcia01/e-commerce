@@ -29,17 +29,35 @@ function showProductsInfo() {
            <b>Cantidad de vendidos </b>
            <p>${productsInfo.soldCount} </p> 
            <b> Imágenes ilustrativas </b> <br>
-           
            `
-    let divImg = `<div class="row-3"  style= "display:flex ; gap:14px;  flex-wrap: wrap;">`
 
+    let divImg = `<div id="carouselImg" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+<div class="carousel-item active">
+  <img src="${productsInfo.images[0]}" alt="product image" class="d-block ">  
+  </div>
+
+  `
+productsInfo.images.shift()
     productsInfo.images.forEach(imagen => {
         divImg +=
-            `
-           <img src="${imagen}" alt="product image" class="img-thumbnail" width="316px">
+            `<div class="carousel-item ">
+           <img src="${imagen}" alt="product image" class="d-block ">
+           </div>
            `
     })
-    divImg += `</div>`
+    divImg += `
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselImg" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselImg" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+    `
 
     resultadoInfo.innerHTML = bodyInfo + divImg;
 
@@ -140,7 +158,7 @@ function addComent() {
 
     newComentContainer.innerHTML += `
     <div class="list-group-item">
-    <p> <b>${localStorage.getItem("email") + "</b> - " + now + " -"}  
+    <p> <b>${localStorage.getItem("user") + "</b> - " + now + " -"}  
         ${`<span class="fa fa-star checked"></span>`.repeat(option.text) +
         `<span class="fa-regular fa-star"></span>`.repeat(scoreReview)}
             
