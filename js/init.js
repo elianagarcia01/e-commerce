@@ -53,7 +53,6 @@ document.getElementById("user").innerHTML = `
     <ul class="navbar-nav">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="nombreUsuario" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-         
         </a>
         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="nombreUsuario">
           <li><a class="dropdown-item" href="cart.html">Mi carrito</a></li>

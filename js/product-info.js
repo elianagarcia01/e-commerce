@@ -34,15 +34,15 @@ function showProductsInfo() {
     let divImg = `<div id="carouselImg" class="carousel carousel-dark slide" data-bs-ride="carousel">
     <div class="carousel-inner">
 <div class="carousel-item active">
-  <img src="${productsInfo.images[0]}" alt="product image" class="d-block ">  
+  <img src="${productsInfo.images[0]}" alt="product image" class="d-block w-100">  
   </div>
 
   `
-productsInfo.images.shift()
+    productsInfo.images.shift()
     productsInfo.images.forEach(imagen => {
         divImg +=
             `<div class="carousel-item ">
-           <img src="${imagen}" alt="product image" class="d-block ">
+           <img src="${imagen}" alt="product image" class="d-block w-100">
            </div>
            `
     })
@@ -58,26 +58,26 @@ productsInfo.images.shift()
   </button>
 </div>
     `
-
     resultadoInfo.innerHTML = bodyInfo + divImg;
 
-    let bodyRelated=`
+    //PRODUCTOS RELACIONADOS
+    let bodyRelated = `
     <hr>
     <h4>Productos relacionados</h4> <br>
     <div class="row-3"  style= "display:flex ; gap:14px;  flex-wrap: wrap;">`
     productsInfo.relatedProducts.forEach(related => {
-            
-            bodyRelated += `
-            <div onclick="setRelatedID(${related.id})" class="cursor-active">
-            <img src="${related.image}" alt="product image" class="img-thumbnail" width="316px">
+
+        bodyRelated += `
+            <div onclick="setRelatedID(${related.id})" class="cursor-active" >
+            <img src="${related.image}" alt="product image" class="img-thumbnail" width="316px">  
             <h5>${related.name}</h5>
             </div>
             `
-        })
+    })
 
-        bodyRelated += `</div>`
-        resultadoRelated.innerHTML= bodyRelated 
-    }
+    bodyRelated += `</div>`
+    resultadoRelated.innerHTML = bodyRelated
+}
 
 let coments = [];
 function showComents() {

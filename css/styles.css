@@ -189,23 +189,6 @@ a.custom-card:hover {
   color: orange;
 }
 
-
-
-.carousel-inner img {
-  width: 60%;
-  margin-left:130px;
-}
-
-.carousel-inner{
-  width: 50%;
-  
-}
-
-.carousel-control-prev{
-  margin-left: 1px;
-}
-
-.carousel-control-next{
-  margin-right: 660px;
-
+#carouselImg{
+  width: 32%;
 }
