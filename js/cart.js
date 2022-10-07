@@ -4,33 +4,40 @@ const table = document.getElementById("table");
 
 let cartInfo
 
+
+
 function myFunction() {
-    let input= document.getElementById("subtotal").value;
+    let input = document.getElementById("subtotal")
+   // cartInfo.articles.push (2805)
+    //console.log(cartInfo.articles)
     cartInfo.articles.forEach(art => {
-       let result= art.unitCost* input
-       console.log(result)
-       let td= document.getElementById("td")
-       td.innerHTML=art.currency + result
+        let result = art.unitCost * input.value
+        //console.log(result)
+        let tdB = document.getElementById("tdB")
+        tdB.innerHTML = art.currency + result
     })
-     
 }
 
 function showCart() {
     cartInfo.articles.forEach(art => {
         bodyInfo = `
         <tr>
-        <td> <img src="${art.image}" width="130px"</td>
+        <th scope="row"></th>
+        <td> <img src="${art.image}" width="70px"</td>
         <td>${art.name}</td>
         <td>${art.currency}${art.unitCost}</td>
-        <td><input onchange="myFunction()"type="number" id="subtotal" value="${art.count}" style="width: 60px;"/></td>`
-        
-        inputValue=
-        `<td id="td">${art.currency}${art.unitCost*art.count}</td>
+        <td><input class="form-control" type="number" id="subtotal" value="${art.count}" style="width: 60px;"/></td>`
+
+        inputValue =
+            `<td ><b id="tdB">${art.currency}${art.unitCost * art.count}</b></td>
         </tr>
         `
     })
 
-    table.innerHTML += bodyInfo+inputValue
+    table.innerHTML += bodyInfo + inputValue
+
+     input = document.querySelector('input');
+    input.addEventListener('input', myFunction)
 }
 
 

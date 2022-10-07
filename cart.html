@@ -42,17 +42,60 @@
       </div>
       <h4>Artículos a comprar</h4>
       <br>
-      <table style="width:100%" id="table">
+      <table class="table" style="width:100%">
+        <thead>
           <tr>
             <th></th>
-              <th>Nombre</th>
-              <th>Costo</th>
-              <th>Cantidad</th>
-              <th>Subtotal</th>
+            <th scope="col"></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Costo</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Subtotal</th>
           </tr>
+        </thead>
+        <tbody id="table">
+        </tbody>
       </table>
-      <hr>
+
       <div id="containerCart">
+        <hr>
+        <form>
+          <div>
+            <h4>Tipo de envío</h4>
+            <input type="radio" id="prem" name="compra" checked>
+            <label class="form-check-label" for="prem">
+              Premium 2 a 5 días (15%)
+            </label>
+          </div>
+          <div>
+            <input type="radio" id="exp" name="compra">
+            <label class="form-check-label" for="exp">
+              Express 5 a 8 días (7%)
+            </label>
+          </div>
+          <div>
+            <input type="radio" id="sta" name="compra">
+            <label class="form-check-label" for="sta">
+              Standard 12 a 15 días (5%)
+            </label>
+          </div>
+          <br>
+          <div class="row">
+            <h4>Dirección de envío</h4>
+            <div class="col-6">
+              <label>Calle</label>
+              <input type="text" class="form-control"><br>
+              <label>Esquina</label>
+              <input type="text" class="form-control" size="50">
+            </div>
+            <div class="col-3">
+              <label>Número</label>
+              <input type="text" class="form-control" size="30">
+            </div>
+          </div>
+          <br>
+          <hr>
+        </form>
       </div>
     </div>
   </main>
