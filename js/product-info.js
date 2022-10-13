@@ -14,11 +14,45 @@ function setRelatedID(id) {
 }
 
 let productsInfo
+let productNew = [];
+
+//Función para el boton de comprar, agrega el objeto del producto al local storage 
+function buyProduct(id) {
+    alert("Agregado al carrito")
+    let valueI
+
+    if (localStorage.getItem('buyProduct') !== null) {
+        valorI = localStorage.getItem('buyProduct')
+        valorI = JSON.parse(valorI)
+
+        console.log(valorI)
+    } else {
+        valorI = []
+    }
+
+    let { name, cost, currency, images } = productsInfo;
+    let objetBuy = {
+        id: id,
+        name: name,
+        count: 1,
+        unitCost: cost,
+        currency: currency,
+        image: images[0]
+    }
+    valorI.push(objetBuy)
+    valorI = JSON.stringify(valorI)
+
+    localStorage.setItem(`buyProduct`, valorI);
+    //console.log(valorI)
+}
 
 function showProductsInfo() {
     bodyInfo = `
            <br>
+           <div class=" d-flex justify-content-between">
            <h3>${productsInfo.name} </h3>
+           <button type="button" class="btn btn-success" onclick="buyProduct(${productsInfo.id})">Comprar</button>
+           </div>
            <hr>
            <b> Precio </b>
            <p>${productsInfo.currency} ${productsInfo.cost} </p>
