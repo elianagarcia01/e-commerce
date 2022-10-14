@@ -14,10 +14,9 @@ function setRelatedID(id) {
 }
 
 let productsInfo
-let productNew = [];
 
-//Función para el boton de comprar, agrega el objeto del producto al local storage 
-function buyProduct(id) {
+//Función para el boton de comprar, agrega el objeto del producto a una array, estará en el localStorage 
+function buyProduct() {
     alert("Agregado al carrito")
     let valueI
 
@@ -30,20 +29,21 @@ function buyProduct(id) {
         valorI = []
     }
 
-    let { name, cost, currency, images } = productsInfo;
+    let { id,name, cost, currency, images } = productsInfo;
     let objetBuy = {
         id: id,
         name: name,
         count: 1,
         unitCost: cost,
         currency: currency,
-        image: images[0]
+        image: images[0],
     }
     valorI.push(objetBuy)
     valorI = JSON.stringify(valorI)
 
     localStorage.setItem(`buyProduct`, valorI);
     //console.log(valorI)
+    
 }
 
 function showProductsInfo() {
@@ -51,7 +51,7 @@ function showProductsInfo() {
            <br>
            <div class=" d-flex justify-content-between">
            <h3>${productsInfo.name} </h3>
-           <button type="button" class="btn btn-success" onclick="buyProduct(${productsInfo.id})">Comprar</button>
+           <button type="button" class="btn btn-success" onclick="buyProduct()">Comprar</button>
            </div>
            <hr>
            <b> Precio </b>
@@ -72,8 +72,10 @@ function showProductsInfo() {
   </div>
 
   `
-    productsInfo.images.shift()
-    productsInfo.images.forEach(imagen => {
+  //let newArray= productsInfo.images
+  //newArray.shift()
+  //productsInfo.images.shift()
+  productsInfo.images.forEach(imagen => {
         divImg +=
             `<div class="carousel-item ">
            <img src="${imagen}" alt="product image" class="d-block w-100">
