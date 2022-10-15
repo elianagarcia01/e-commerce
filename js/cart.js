@@ -27,7 +27,7 @@ function showCart() {
 
     //Destructuro el objeto que esta en articles y lo agrego a la tabla html
     let { articles: [{ name, count, unitCost, currency, image }] } = cartInfo
-    
+
     firstBuy = `
         <tr>
         <th scope="row"></th>
@@ -41,8 +41,10 @@ function showCart() {
         `<td><b>${currency}<span id="spanResult">${result}</span></b></td>
         </tr>
         `
-    table.innerHTML +=  firstBuy + inputValue
-    
+    table.innerHTML += firstBuy + inputValue
+
+    input = document.querySelector('input');
+    input.addEventListener('input', addAmount)
 
     //Recorro el array que traje con el localStorage, el que contiene los productos a comprar
     let bodyListBuy = ""
@@ -58,13 +60,11 @@ function showCart() {
         <td><b>${art.currency}<span id="spanResult">${art.unitCost * art.count}</span></b></td>
         </tr>
         `
-      console.log(art.image)  
+        console.log(art.image)
     })
 
     table.innerHTML += bodyListBuy
 
-    input = document.querySelector('input');
-    input.addEventListener('input', addAmount)
 }
 
 
