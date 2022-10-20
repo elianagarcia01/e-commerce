@@ -8,21 +8,81 @@ let cartInfo
 function addAmount() {
 
     let span = document.getElementById("spanResult")
-
     let { articles: [{ unitCost }] } = cartInfo
-
     let input = document.getElementById(`subtotal`)
     let result = unitCost * input.value
     span.innerHTML = result
+    costos()
 }
 
+function costos() {
 
+    //Subtotal
+    let { articles: [{ unitCost, currency }] } = cartInfo
+    let spanSubTCost = document.getElementById(`subTotalCost`)
+
+    let result = unitCost * input.value
+    spanSubTCost.innerHTML = currency + result
+
+    //Costo de envio y total
+    let spanEnvioCost = document.getElementById(`costoEnvio`)
+    let totalCost = document.getElementById(`totalCost`)
+
+    let premium = document.querySelector('input[id="prem"]:checked');
+    let express = document.querySelector('input[id="exp"]:checked');
+    let standard = document.querySelector('input[id="sta"]:checked');
+
+    if (premium) {
+        let costoP = Math.trunc(0.15 * result)
+        spanEnvioCost.innerHTML = currency + costoP
+        totalCost.innerHTML = currency + (result + costoP)
+    }
+    if (express) {
+        let costoE = Math.trunc(0.07 * result)
+        spanEnvioCost.innerHTML = currency + costoE
+        totalCost.innerHTML = currency + (result + costoE)
+    }
+    if (standard) {
+        let costoS = Math.trunc(0.05 * result)
+        spanEnvioCost.innerHTML = currency + costoS
+        totalCost.innerHTML = currency + (result + costoS)
+    }
+}
+
+function wayToPay() {
+    let tarj = document.querySelector('input[id="tarj"]:checked');
+    let trans = document.querySelector('input[id="trans"]:checked');
+
+    let nroCuentaDisabled = document.getElementById(`nroCuenta`)
+    let collection = document.getElementsByClassName(`tarjeta`)
+
+    let seleccionPago = document.getElementById(`seleccionPago`)
+
+    if (tarj) {
+        nroCuentaDisabled.disabled = true;
+        for (let i = 0; i < collection.length; i++) {
+            collection[i].disabled = false;
+            seleccionPago.innerHTML = "Tarjeta de crédito"
+
+        }
+    }
+    if (trans) {
+        nroCuentaDisabled.disabled = false;
+        for (let i = 0; i < collection.length; i++) {
+            collection[i].disabled = true;
+        }
+        seleccionPago.innerHTML = "Transferencia bancaria"
+    }
+}
+
+tarj.addEventListener("click", wayToPay)
+trans.addEventListener("click", wayToPay)
 
 function showCart() {
     // Obtengo el array del localStorage de los productos a comprar 
     let buyProductLocal = localStorage.getItem('buyProduct')
     buyProductLocal = JSON.parse(buyProductLocal)
-    console.log(buyProductLocal)
+    // console.log(buyProductLocal)
 
 
     //Destructuro el objeto que esta en articles y lo agrego a la tabla html
@@ -64,9 +124,23 @@ function showCart() {
     })
 
     table.innerHTML += bodyListBuy
-
 }
-
+// Debe seleccionar una forma de pago
+// función para validar el form
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
 
 document.addEventListener("DOMContentLoaded", function (e) {
     getJSONData(URLCART).then(function (resultObj) {

@@ -192,3 +192,7 @@ a.custom-card:hover {
 #carouselImg{
   width: 32%;
 }
+
+#subTotalCost{
+  text-align:center;
+}
