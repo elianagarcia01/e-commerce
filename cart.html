@@ -62,19 +62,19 @@
         <form name="formCart" class="needs-validation" novalidate>
           <div>
             <h4>Tipo de envío</h4>
-            <input type="radio" name="compra" id="prem" checked>
+            <input  class="inputCheck" type="radio" name="compra" id="prem" value='0.15'checked>
             <label class="form-check-label" for="prem">
               Premium 2 a 5 días (15%)
             </label>
           </div>
           <div>
-            <input type="radio" name="compra" id="exp">
+            <input class="inputCheck" type="radio" name="compra" id="exp" value='0.07'>
             <label class="form-check-label" for="exp">
               Express 5 a 8 días (7%)
             </label>
           </div>
           <div>
-            <input type="radio" name="compra" id="sta">
+            <input class="inputCheck" type="radio" name="compra" id="sta" value='0.05'>
             <label class="form-check-label" for="sta">
               Standard 12 a 15 días (5%)
             </label>
@@ -183,9 +183,6 @@
                     <label for="trans" class="form-check-label">
                       Transferencia bancaria
                     </label>
-                    <div class="transferencia invalid-feedback">
-                      Debe seleccionar una forma de pago
-                    </div>
                     <hr>
                     <div class="col-6">
                       <label for="nroCuenta">Número de cuenta </label>
@@ -201,6 +198,10 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="alert alert-success alert-dismissible fade" role="alert" id="alert-success">
+            <p>¡Has comprado con éxito!</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
           <div class="d-grid gap-2">
             <button type="submit" class="btn btn-primary">Finalizar compra</button>
