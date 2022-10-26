@@ -62,19 +62,19 @@
         <form name="formCart" class="needs-validation" novalidate>
           <div>
             <h4>Tipo de envío</h4>
-            <input  class="inputCheck" type="radio" name="compra" id="prem" value='0.15'checked>
+            <input  class="inputCheck" type="radio" name="buy" id="prem" value='0.15'checked>
             <label class="form-check-label" for="prem">
               Premium 2 a 5 días (15%)
             </label>
           </div>
           <div>
-            <input class="inputCheck" type="radio" name="compra" id="exp" value='0.07'>
+            <input class="inputCheck" type="radio" name="buy" id="exp" value='0.07'>
             <label class="form-check-label" for="exp">
               Express 5 a 8 días (7%)
             </label>
           </div>
           <div>
-            <input class="inputCheck" type="radio" name="compra" id="sta" value='0.05'>
+            <input class="inputCheck" type="radio" name="buy" id="sta" value='0.05'>
             <label class="form-check-label" for="sta">
               Standard 12 a 15 días (5%)
             </label>
@@ -117,7 +117,7 @@
               </li>
               <li class="list-group-item">
                 <div class="d-flex justify-content-between">
-                  Costo de envío <br> Según el tipo de envío <span id="costoEnvio"></span>
+                  Costo de envío <br> Según el tipo de envío <span id="shippingCost"></span>
                 </div>
               </li>
               <li class="list-group-item">
@@ -130,7 +130,7 @@
           <hr>
           <div>
           <h4> Forma de pago</h4>
-          <p> <span id="seleccionPago">No ha seleccionado</span>
+          <p> <span id="paymentSelection">No ha seleccionado</span>
             <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#ModalPago">
               Seleccionar
             </button>
@@ -155,14 +155,14 @@
                     <div class="row">
                       <div class="col-6">
                         <label for="tarjID">Número de tarjeta</label>
-                        <input type="text" class="form-control tarjeta" id="tarjID" required>
+                        <input type="text" class="form-control card" id="tarjID" required>
                         <div class="invalid-feedback">
                           Ingresa el número de tarjeta
                         </div>
                         <br>
                         <div>
                           <label for="vencID">Vencimiento (MM/AA)</label>
-                          <input type="text" class="form-control tarjeta" size="50" id="vencID" required>
+                          <input type="text" class="form-control card" size="50" id="vencID" required>
                           <div class="invalid-feedback">
                             Ingresa el vencimiento
                           </div>
@@ -170,7 +170,7 @@
                       </div>
                       <div class="col-4">
                         <label for="codigoID">Código de seg. </label>
-                        <input type="text" class="form-control tarjeta" size="30" id="codigoID" required>
+                        <input type="text" class="form-control card" size="30" id="codigoID" required>
                         <div class="invalid-feedback">
                           Ingresa el código de seguridad
                         </div>
@@ -185,8 +185,8 @@
                     </label>
                     <hr>
                     <div class="col-6">
-                      <label for="nroCuenta">Número de cuenta </label>
-                      <input type="text" class="form-control" size="30" id="nroCuenta" required>
+                      <label for="accountNro">Número de cuenta </label>
+                      <input type="text" class="form-control" size="30" id="accountNro" required>
                       <div class="invalid-feedback">
                         Ingresa el número de cuenta
                       </div>

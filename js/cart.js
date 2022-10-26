@@ -4,6 +4,8 @@ const table = document.getElementById("table");
 
 let cartInfo
 
+arraySubtotal = []
+
 let spanSubTCost = document.getElementById(`subTotalCost`)
 
 //Función para el evento input, cambia el valor del subtotal
@@ -12,14 +14,14 @@ function addAmount(e) {
 
     let span = document.getElementById(`${id}_subtotal`)
     //let { articles: [{ unitCost }] } = cartInfo
-    let costo = parseInt(document.getElementById(`${id}_cost`).dataset.value)
+    let cost = parseInt(document.getElementById(`${id}_cost`).dataset.value)
     let input = parseInt(document.getElementById(`${id}`).value)
-    let result = costo * input
+    let result = cost * input
     span.innerHTML = result
-    costs()
+    // costs()
 }
 
-
+/*
 function costs() {
     //Subtotal
     let { articles: [{ unitCost, currency }] } = cartInfo
@@ -29,11 +31,11 @@ function costs() {
     spanSubTCost.innerHTML = currency + result
 
 
-    document.formCart.compra.forEach(radio => {
+    document.formCart.buy.forEach(radio => {
         radio.addEventListener('change', () => {
 
             //Costo de envio y total
-            let spanEnvioCost = document.getElementById(`costoEnvio`);
+            let spanShippingCost = document.getElementById(`shippingCost`);
             let totalCost = document.getElementById(`totalCost`);
 
             let premium = document.querySelector('input[id="prem"]:checked');
@@ -42,48 +44,48 @@ function costs() {
 
             if (premium) {
                 let costoP = Math.trunc(0.15 * result)
-                spanEnvioCost.innerHTML = currency + costoP
+                spanShippingCost.innerHTML = currency + costoP
                 totalCost.innerHTML = currency + (result + costoP)
             }
             if (express) {
                 let costoE = Math.trunc(0.07 * result)
-                spanEnvioCost.innerHTML = currency + costoE
+                spanShippingCost.innerHTML = currency + costoE
                 totalCost.innerHTML = currency + (result + costoE)
             }
             if (standard) {
                 let costoS = Math.trunc(0.05 * result)
-                spanEnvioCost.innerHTML = currency + costoS
+                spanShippingCost.innerHTML = currency + costoS
                 totalCost.innerHTML = currency + (result + costoS)
             }
 
         })
     });
-}
+}*/
 
 //FORMA DE PAGO
 function wayToPay() {
     let tarj = document.querySelector('input[id="tarj"]:checked');
     let trans = document.querySelector('input[id="trans"]:checked');
 
-    let nroCuentaDisabled = document.getElementById(`nroCuenta`)
-    let collection = document.getElementsByClassName(`tarjeta`)
+    let disabledAccountNro = document.getElementById(`accountNro`)
+    let collection = document.getElementsByClassName(`card`)
 
-    let seleccionPago = document.getElementById(`seleccionPago`)
+    let paymentSelection = document.getElementById(`paymentSelection`)
 
     if (tarj) {
-        nroCuentaDisabled.disabled = true;
+        disabledAccountNro.disabled = true;
         for (let i = 0; i < collection.length; i++) {
             collection[i].disabled = false;
-            seleccionPago.innerHTML = "Tarjeta de crédito"
+            paymentSelection.innerHTML = "Tarjeta de crédito"
 
         }
     }
     if (trans) {
-        nroCuentaDisabled.disabled = false;
+        disabledAccountNro.disabled = false;
         for (let i = 0; i < collection.length; i++) {
             collection[i].disabled = true;
         }
-        seleccionPago.innerHTML = "Transferencia bancaria"
+        paymentSelection.innerHTML = "Transferencia bancaria"
     }
 }
 
@@ -110,17 +112,28 @@ function showCart() {
 
     let result = unitCost * count
     inputValue =
-        `<td><b>${currency}<span id="${id}_subtotal">${result}</span></b></td>
+        `<td><b>${currency}<span id="${id}_subtotal" data-value="${result}">${result}</span></b></td>
         </tr>
         `
     table.innerHTML += firstBuy + inputValue
+
+    arraySubtotal.push(parseInt(document.getElementById(`${id}_subtotal`).dataset.value))
+    //console.log(parseInt(document.getElementById(`${id}_subtotal`).dataset.value))
 
     //costs()
     spanSubTCost.innerHTML = currency + result
     //Recorro el array que traje con el localStorage, el que contiene los productos a comprar
     let bodyListBuy = ""
-    buyProductLocal.forEach(art => {
-        bodyListBuy += `
+
+    if (buyProductLocal) {
+        buyProductLocal.forEach(art => {
+
+            if (art.currency === "UYU") {
+                art.currency = "USD"
+                art.unitCost = Math.round(art.unitCost / 40)
+            }
+
+            bodyListBuy += `
         <tr>
         <th scope="row"></th>
         <td> <img src="${art.image}" width="80px"</td>
@@ -128,12 +141,20 @@ function showCart() {
         <td>${art.currency}<span id="${art.id}_cost" data-value="${art.unitCost}">${art.unitCost}</span></td>
         <td><input class="form-control" type="number" min="1" id="${art.id}" value="${art.count}" style="width: 60px;"/></td>
 
-        <td><b>${art.currency}<span id="${art.id}_subtotal">${art.unitCost * art.count}</span></b></td>
+        <td><b>${art.currency}<span id="${art.id}_subtotal" data-value="${art.unitCost * art.count}">${art.unitCost * art.count}</span></b></td>
         </tr>
         `
-    })
+        })
+    }
     table.innerHTML += bodyListBuy
+
 }
+
+function costCart() {
+    arraySubtotal.reduce((a, b) => a + b, 0)
+    console.log(arraySubtotal)
+}
+
 
 //ALERTA EXITOSA
 function showAlertSuccess() {
@@ -161,21 +182,34 @@ function showAlertSuccess() {
         })
 })()
 
+
 document.addEventListener("DOMContentLoaded", function (e) {
 
     getJSONData(URLCART).then(function (resultObj) {
         if (resultObj.status === "ok") {
             cartInfo = resultObj.data
             showCart()
-            input = document.getElementById(`50924`);
-            input.addEventListener('input', addAmount);
-            
-            input = document.getElementById(`50921`);
-            input.addEventListener('input', addAmount);
 
-            input = document.getElementById(`50922`);
-            input.addEventListener('input', addAmount);
+            //Evento input al primer articulo a comprar
+            let { articles: [{ id }] } = cartInfo
+            inputFirstBuy = document.getElementById(`${id}`);
+            inputFirstBuy.addEventListener('input', addAmount);
 
+
+            //Evento input a articulos agregados
+            let buyProductLocal = localStorage.getItem('buyProduct')
+            buyProductLocal = JSON.parse(buyProductLocal)
+            if (buyProductLocal) {
+                buyProductLocal.forEach(art => {
+                    input = document.getElementById(`${art.id}`);
+                    input.addEventListener('input', addAmount);
+                    arraySubtotal.push(parseInt(document.getElementById(`${art.id}_subtotal`).dataset.value))
+                })
+            }
         }
+        costCart()
+        //console.log(arraySubtotal)
+        //console.log(arraySubtotal.reduce((a, b) => a + b, 0))
+
     });
 })
