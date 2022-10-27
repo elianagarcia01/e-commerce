@@ -6,8 +6,6 @@ let cartInfo
 
 arraySubtotal = []
 
-let spanSubTCost = document.getElementById(`subTotalCost`)
-
 //Función para el evento input, cambia el valor del subtotal
 function addAmount(e) {
     let id = e["srcElement"].id
@@ -18,49 +16,49 @@ function addAmount(e) {
     let input = parseInt(document.getElementById(`${id}`).value)
     let result = cost * input
     span.innerHTML = result
-    // costs()
 }
 
-/*
-function costs() {
+function costCart() {
+    
     //Subtotal
-    let { articles: [{ unitCost, currency }] } = cartInfo
     let spanSubTCost = document.getElementById(`subTotalCost`)
+    let arraySubtotalReduce = arraySubtotal.reduce((a, b) => a + b, 0)
+    console.log(arraySubtotal)
+    spanSubTCost.innerHTML = "USD" + arraySubtotalReduce
 
-    let result = unitCost * input.value
-    spanSubTCost.innerHTML = currency + result
+    //Costo de envio y total
+    let spanShippingCost = document.getElementById(`shippingCost`);
+    let totalCost = document.getElementById(`totalCost`);
 
+        let costoP = Math.trunc(0.15 * arraySubtotalReduce)
+        spanShippingCost.innerHTML = "USD" + costoP
+        totalCost.innerHTML = "USD" + (arraySubtotalReduce + costoP)
 
     document.formCart.buy.forEach(radio => {
         radio.addEventListener('change', () => {
-
-            //Costo de envio y total
-            let spanShippingCost = document.getElementById(`shippingCost`);
-            let totalCost = document.getElementById(`totalCost`);
-
             let premium = document.querySelector('input[id="prem"]:checked');
             let express = document.querySelector('input[id="exp"]:checked');
             let standard = document.querySelector('input[id="sta"]:checked');
 
             if (premium) {
-                let costoP = Math.trunc(0.15 * result)
-                spanShippingCost.innerHTML = currency + costoP
-                totalCost.innerHTML = currency + (result + costoP)
+                let costoP = Math.trunc(0.15 * arraySubtotalReduce)
+                spanShippingCost.innerHTML = "USD" + costoP
+                totalCost.innerHTML = "USD" + (arraySubtotalReduce + costoP)
             }
             if (express) {
-                let costoE = Math.trunc(0.07 * result)
-                spanShippingCost.innerHTML = currency + costoE
-                totalCost.innerHTML = currency + (result + costoE)
+                let costoE = Math.trunc(0.07 * arraySubtotalReduce)
+                spanShippingCost.innerHTML = "USD" + costoE
+                totalCost.innerHTML = "USD" + (arraySubtotalReduce + costoE)
             }
             if (standard) {
-                let costoS = Math.trunc(0.05 * result)
-                spanShippingCost.innerHTML = currency + costoS
-                totalCost.innerHTML = currency + (result + costoS)
+                let costoS = Math.trunc(0.05 * arraySubtotalReduce)
+                spanShippingCost.innerHTML = "USD" + costoS
+                totalCost.innerHTML = "USD" + (arraySubtotalReduce + costoS)
             }
 
         })
     });
-}*/
+}
 
 //FORMA DE PAGO
 function wayToPay() {
@@ -77,7 +75,6 @@ function wayToPay() {
         for (let i = 0; i < collection.length; i++) {
             collection[i].disabled = false;
             paymentSelection.innerHTML = "Tarjeta de crédito"
-
         }
     }
     if (trans) {
@@ -105,7 +102,7 @@ function showCart() {
     firstBuy = `
         <tr>
         <th scope="row"></th>
-        <td> <img src="${image}" width="80px"</td>
+        <td> <img src="${image}" width="80px"></td>
         <td>${name}</td>
         <td >${currency} <span id="${id}_cost" data-value="${unitCost}">${unitCost}</span></td>
         <td><input class="form-control" type="number" min="1" id="${id}" value="${count}" style="width: 60px;"/></td>`
@@ -118,49 +115,40 @@ function showCart() {
     table.innerHTML += firstBuy + inputValue
 
     arraySubtotal.push(parseInt(document.getElementById(`${id}_subtotal`).dataset.value))
-    //console.log(parseInt(document.getElementById(`${id}_subtotal`).dataset.value))
 
-    //costs()
-    spanSubTCost.innerHTML = currency + result
     //Recorro el array que traje con el localStorage, el que contiene los productos a comprar
     let bodyListBuy = ""
 
     if (buyProductLocal) {
         buyProductLocal.forEach(art => {
-
             if (art.currency === "UYU") {
                 art.currency = "USD"
                 art.unitCost = Math.round(art.unitCost / 40)
             }
-
             bodyListBuy += `
-        <tr>
-        <th scope="row"></th>
-        <td> <img src="${art.image}" width="80px"</td>
-        <td>${art.name}</td>
-        <td>${art.currency}<span id="${art.id}_cost" data-value="${art.unitCost}">${art.unitCost}</span></td>
-        <td><input class="form-control" type="number" min="1" id="${art.id}" value="${art.count}" style="width: 60px;"/></td>
-
-        <td><b>${art.currency}<span id="${art.id}_subtotal" data-value="${art.unitCost * art.count}">${art.unitCost * art.count}</span></b></td>
-        </tr>
+            <tr>
+            <th scope="row"></th>
+            <td> <img src="${art.image}" width="80px"></td>
+            <td>${art.name}</td>
+            <td>${art.currency}<span id="${art.id}_cost" data-value="${art.unitCost}">${art.unitCost}</span></td>
+            <td><input class="form-control" type="number" min="1" id="${art.id}" value="${art.count}" style="width: 60px;" />
+            </td>
+        
+            <td><b>${art.currency}<span id="${art.id}_subtotal" data-value="${art.unitCost * art.count}">${art.unitCost *
+                art.count}</span></b></td>
+          </tr>
         `
+            arraySubtotal.push(parseInt(`${art.unitCost * art.count}`))
         })
     }
     table.innerHTML += bodyListBuy
 
 }
 
-function costCart() {
-    arraySubtotal.reduce((a, b) => a + b, 0)
-    console.log(arraySubtotal)
-}
-
-
 //ALERTA EXITOSA
 function showAlertSuccess() {
     document.getElementById("alert-success").classList.add("show");
 }
-
 
 // FUNCION PARA VALIDAR EL FORM
 (function () {
@@ -182,7 +170,6 @@ function showAlertSuccess() {
         })
 })()
 
-
 document.addEventListener("DOMContentLoaded", function (e) {
 
     getJSONData(URLCART).then(function (resultObj) {
@@ -203,13 +190,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
                 buyProductLocal.forEach(art => {
                     input = document.getElementById(`${art.id}`);
                     input.addEventListener('input', addAmount);
-                    arraySubtotal.push(parseInt(document.getElementById(`${art.id}_subtotal`).dataset.value))
                 })
             }
         }
         costCart()
-        //console.log(arraySubtotal)
-        //console.log(arraySubtotal.reduce((a, b) => a + b, 0))
-
     });
 })
