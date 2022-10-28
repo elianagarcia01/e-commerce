@@ -2,6 +2,8 @@ URLCART = CART_INFO_URL + "25801" + EXT_TYPE
 
 const table = document.getElementById("table");
 
+let peugeot
+
 let cartInfo
 
 arraySubtotal = []
@@ -11,11 +13,17 @@ function addAmount(e) {
     let id = e["srcElement"].id
 
     let span = document.getElementById(`${id}_subtotal`)
+
     //let { articles: [{ unitCost }] } = cartInfo
     let cost = parseInt(document.getElementById(`${id}_cost`).dataset.value)
     let input = parseInt(document.getElementById(`${id}`).value)
     let result = cost * input
     span.innerHTML = result
+
+    peugeot = result
+    console.log(peugeot)
+    arraySubtotal.push(peugeot)
+    console.log(arraySubtotal)
 }
 
 function costCart() {
@@ -23,7 +31,7 @@ function costCart() {
     //Subtotal
     let spanSubTCost = document.getElementById(`subTotalCost`)
     let arraySubtotalReduce = arraySubtotal.reduce((a, b) => a + b, 0)
-    console.log(arraySubtotal)
+    //console.log(arraySubtotal)
     spanSubTCost.innerHTML = "USD" + arraySubtotalReduce
 
     //Costo de envio y total
@@ -114,7 +122,8 @@ function showCart() {
         `
     table.innerHTML += firstBuy + inputValue
 
-    arraySubtotal.push(parseInt(document.getElementById(`${id}_subtotal`).dataset.value))
+    peugeot = parseInt(document.getElementById(`${id}_subtotal`).dataset.value)
+    arraySubtotal.push(peugeot)
 
     //Recorro el array que traje con el localStorage, el que contiene los productos a comprar
     let bodyListBuy = ""
@@ -181,7 +190,6 @@ function showCart() {
 })()
 
 document.addEventListener("DOMContentLoaded", function (e) {
-
     getJSONData(URLCART).then(function (resultObj) {
         if (resultObj.status === "ok") {
             cartInfo = resultObj.data
@@ -190,8 +198,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
             //Evento input al primer articulo a comprar
             let { articles: [{ id }] } = cartInfo
             inputFirstBuy = document.getElementById(`${id}`);
-            inputFirstBuy.addEventListener('input', addAmount);
-
+            inputFirstBuy.addEventListener('input', addAmount)
+            console.log(arraySubtotal)
 
             //Evento input a articulos agregados
             let buyProductLocal = localStorage.getItem('buyProduct')
