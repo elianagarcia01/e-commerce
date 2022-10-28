@@ -134,10 +134,11 @@
               <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#ModalPago">
                 Seleccionar
               </button>
-              <!--<label class="invalid-feedback form-check-label" for="tarj">
-            Debe seleccionar una forma de pago
-          </label>-->
             </p>
+
+            <div id="paymentWarning">
+            </div>
+
             <!-- Modal -->
             <div class="modal fade" id="ModalPago" tabindex="-1" aria-labelledby="ModalPagoLabel" aria-hidden="true">
               <div class="modal-dialog">
@@ -148,21 +149,21 @@
                   <div class="modal-body">
                     <div class="tarjetaDeCredito">
                       <input type="radio" name="pago" id="tarj" required>
-                      <label class="form-check-label">
+                      <label for="tarj">
                         Tarjeta de crédito
                       </label>
                       <hr>
                       <div class="row">
                         <div class="col-6">
                           <label for="tarjID">Número de tarjeta</label>
-                          <input type="text" class="form-control card" id="tarjID" required>
+                          <input type="text" class="form-control card" id="cardID" required>
                           <div class="invalid-feedback">
                             Ingresa el número de tarjeta
                           </div>
                           <br>
                           <div>
                             <label for="vencID">Vencimiento (MM/AA)</label>
-                            <input type="text" class="form-control card" size="50" id="vencID" required>
+                            <input type="text" class="form-control card" size="50" id="expirationID" required>
                             <div class="invalid-feedback">
                               Ingresa el vencimiento
                             </div>
@@ -170,7 +171,7 @@
                         </div>
                         <div class="col-4">
                           <label for="codigoID">Código de seg. </label>
-                          <input type="text" class="form-control card" size="30" id="codigoID" required>
+                          <input type="text" class="form-control card" size="30" id="codeID" required>
                           <div class="invalid-feedback">
                             Ingresa el código de seguridad
                           </div>
@@ -180,35 +181,36 @@
                     <br>
                     <div class="transferencia">
                       <input type="radio" name="pago" id="trans" required>
-                      <label for="trans" class="form-check-label">
+                      <label for="trans">
                         Transferencia bancaria
                       </label>
-                      <hr>
-                      <div class="col-6">
-                        <label for="accountNro">Número de cuenta </label>
-                        <input type="text" class="form-control" size="30" id="accountNro" required>
-                        <div class="invalid-feedback">
-                          Ingresa el número de cuenta
-                        </div>
+                    </div>
+                    <hr>
+                    <div class="col-6">
+                      <label for="accountNro">Número de cuenta </label>
+                      <input type="text" class="form-control" size="30" id="accountNro" required>
+                      <div class="invalid-feedback">
+                        Ingresa el número de cuenta
                       </div>
                     </div>
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
-                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
               </div>
             </div>
-            <div class="alert alert-success alert-dismissible fade" role="alert" id="alert-success">
-              <p>¡Has comprado con éxito!</p>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <div class="d-grid gap-2">
-              <button type="submit" class="btn btn-primary">Finalizar compra</button>
-            </div>
           </div>
-        </form>
+          <div class="alert alert-success alert-dismissible fade" role="alert" id="alert-success">
+            <p>¡Has comprado con éxito!</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="btnExitoso"></button>
+          </div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Finalizar compra</button>
+          </div>
       </div>
+      </form>
+    </div>
     </div>
   </main>
   <footer class="text-muted">

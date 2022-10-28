@@ -19,7 +19,7 @@ function addAmount(e) {
 }
 
 function costCart() {
-    
+
     //Subtotal
     let spanSubTCost = document.getElementById(`subTotalCost`)
     let arraySubtotalReduce = arraySubtotal.reduce((a, b) => a + b, 0)
@@ -30,9 +30,9 @@ function costCart() {
     let spanShippingCost = document.getElementById(`shippingCost`);
     let totalCost = document.getElementById(`totalCost`);
 
-        let costoP = Math.trunc(0.15 * arraySubtotalReduce)
-        spanShippingCost.innerHTML = "USD" + costoP
-        totalCost.innerHTML = "USD" + (arraySubtotalReduce + costoP)
+    let costoP = Math.trunc(0.15 * arraySubtotalReduce)
+    spanShippingCost.innerHTML = "USD" + costoP
+    totalCost.innerHTML = "USD" + (arraySubtotalReduce + costoP)
 
     document.formCart.buy.forEach(radio => {
         radio.addEventListener('change', () => {
@@ -145,11 +145,6 @@ function showCart() {
 
 }
 
-//ALERTA EXITOSA
-function showAlertSuccess() {
-    document.getElementById("alert-success").classList.add("show");
-}
-
 // FUNCION PARA VALIDAR EL FORM
 (function () {
     'use strict'
@@ -157,13 +152,28 @@ function showAlertSuccess() {
     Array.prototype.slice.call(forms)
         .forEach(function (form) {
             form.addEventListener('submit', function (event) {
+                //Datos para la advertencia de la forma de pago
+                let card = document.querySelector('input[id="tarj"]:checked');
+                let trans = document.querySelector('input[id="trans"]:checked');
+                let warning = document.getElementById("paymentWarning")
+
+                let disabledAccountNro = document.getElementById(`accountNro`).value
+                let cardID = document.getElementById(`cardID`).value
+                let expirationID = document.getElementById(`expirationID`).value
+                let codeId = document.getElementById(`codeID`).value
+
                 if (!form.checkValidity()) {
                     event.preventDefault()
                     event.stopPropagation()
-
                 }
                 else {
-                    showAlertSuccess()
+                    document.getElementById("alert-success").classList.add("show")
+                }
+                //Advertencia forma de pago
+                if (!card && !trans || (disabledAccountNro === "") && (cardID === "" || expirationID === "" || codeId === "")) {
+                    warning.innerHTML = `
+                    <p class="text-danger"><small>Debe seleccionar una forma de pago</small></p>
+                    `
                 }
                 form.classList.add('was-validated')
             }, false)
