@@ -30,10 +30,11 @@ function costCart() {
     inputFirstBuy = parseInt(document.getElementById(`${id}_subtotal`).dataset.value)
     arraySubtotal.push(inputFirstBuy)
 
+    if (buyProductLocal) {
     buyProductLocal.forEach(art => {
         input = parseInt(document.getElementById(`${art.id}_subtotal`).dataset.value)
         arraySubtotal.push(input)
-    })
+    })}
 
     //Subtotal
     let spanSubTCost = document.getElementById(`subTotalCost`)
