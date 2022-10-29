@@ -98,7 +98,7 @@
             </div>
             <div class="col-3">
               <label for="numID" class="form-label">Número</label>
-              <input type="text" class="form-control" size="30" id="numID" required>
+              <input type="text" class="form-control" size="30" id="numID" pattern="[0-9]+" required>
               <div class="invalid-feedback">
                 Ingresa un número
               </div>
@@ -130,14 +130,15 @@
           <hr>
           <div>
             <h4> Forma de pago</h4>
-            <p> <span id="paymentSelection">No ha seleccionado</span>
-              <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#ModalPago">
+            <p> 
+              <div>
+                <span id="paymentSelection">No ha seleccionado</span>
+              <button id="btnSelect" type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#ModalPago">
                 Seleccionar
               </button>
-            </p>
-
-            <div id="paymentWarning">
+              <div class="invalid-feedback">Debe seleccionar una forma de pago</div>
             </div>
+            </p>
 
             <!-- Modal -->
             <div class="modal fade" id="ModalPago" tabindex="-1" aria-labelledby="ModalPagoLabel" aria-hidden="true">
@@ -206,7 +207,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="btnExitoso"></button>
           </div>
           <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-primary">Finalizar compra</button>
+            <button type="submit" class="btn btn-primary" id="boton">Finalizar compra</button>
           </div>
       </div>
       </form>

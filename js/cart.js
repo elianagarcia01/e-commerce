@@ -2,39 +2,46 @@ URLCART = CART_INFO_URL + "25801" + EXT_TYPE
 
 const table = document.getElementById("table");
 
-let peugeot
-
 let cartInfo
 
-arraySubtotal = []
-
-//Función para el evento input, cambia el valor del subtotal
+//Function for the input event, change the value of the subtotal
 function addAmount(e) {
     let id = e["srcElement"].id
-
     let span = document.getElementById(`${id}_subtotal`)
 
-    //let { articles: [{ unitCost }] } = cartInfo
     let cost = parseInt(document.getElementById(`${id}_cost`).dataset.value)
     let input = parseInt(document.getElementById(`${id}`).value)
     let result = cost * input
-    span.innerHTML = result
 
-    peugeot = result
-    console.log(peugeot)
-    arraySubtotal.push(peugeot)
-    console.log(arraySubtotal)
+    span.innerHTML = result
+    span.dataset.value = result
+    costCart()
 }
 
+// Displays and calculates cost values ​​in real time
 function costCart() {
+    let buyProductLocal = localStorage.getItem('buyProduct')
+    buyProductLocal = JSON.parse(buyProductLocal)
+    //console.log(buyProductLocal)
+
+    let arraySubtotal = []
+
+    let { articles: [{ id }] } = cartInfo
+    inputFirstBuy = parseInt(document.getElementById(`${id}_subtotal`).dataset.value)
+    arraySubtotal.push(inputFirstBuy)
+
+    buyProductLocal.forEach(art => {
+        input = parseInt(document.getElementById(`${art.id}_subtotal`).dataset.value)
+        arraySubtotal.push(input)
+    })
 
     //Subtotal
     let spanSubTCost = document.getElementById(`subTotalCost`)
     let arraySubtotalReduce = arraySubtotal.reduce((a, b) => a + b, 0)
-    //console.log(arraySubtotal)
+
     spanSubTCost.innerHTML = "USD" + arraySubtotalReduce
 
-    //Costo de envio y total
+    //Shipping cost and total
     let spanShippingCost = document.getElementById(`shippingCost`);
     let totalCost = document.getElementById(`totalCost`);
 
@@ -68,14 +75,13 @@ function costCart() {
     });
 }
 
-//FORMA DE PAGO
+//FUNCTION FOR THE METHOD OF PAYMENT, disable unselected fields- modal
 function wayToPay() {
     let tarj = document.querySelector('input[id="tarj"]:checked');
     let trans = document.querySelector('input[id="trans"]:checked');
 
     let disabledAccountNro = document.getElementById(`accountNro`)
     let collection = document.getElementsByClassName(`card`)
-
     let paymentSelection = document.getElementById(`paymentSelection`)
 
     if (tarj) {
@@ -97,14 +103,13 @@ function wayToPay() {
 tarj.addEventListener("click", wayToPay)
 trans.addEventListener("click", wayToPay)
 
-//MUESTRA EL CARRITO
+//FUNCTION THAT SHOWS THE CART
 function showCart() {
-    // Obtengo el array del localStorage de los productos a comprar 
+    // I get the localStorage array of the products to buy
     let buyProductLocal = localStorage.getItem('buyProduct')
     buyProductLocal = JSON.parse(buyProductLocal)
-    // console.log(buyProductLocal)
 
-    //Destructuro el objeto que esta en articles y lo agrego a la tabla html
+    //I destroy the object that is in articles and add it to the html table
     let { articles: [{ name, count, unitCost, currency, image, id }] } = cartInfo
 
     firstBuy = `
@@ -122,10 +127,7 @@ function showCart() {
         `
     table.innerHTML += firstBuy + inputValue
 
-    peugeot = parseInt(document.getElementById(`${id}_subtotal`).dataset.value)
-    arraySubtotal.push(peugeot)
-
-    //Recorro el array que traje con el localStorage, el que contiene los productos a comprar
+    //go through the array that I brought with the localStorage, the one that contains the products to buy
     let bodyListBuy = ""
 
     if (buyProductLocal) {
@@ -147,30 +149,18 @@ function showCart() {
                 art.count}</span></b></td>
           </tr>
         `
-            arraySubtotal.push(parseInt(`${art.unitCost * art.count}`))
         })
     }
     table.innerHTML += bodyListBuy
-
 }
 
-// FUNCION PARA VALIDAR EL FORM
+// FUNCTION TO VALIDATE THE FORM
 (function () {
     'use strict'
     var forms = document.querySelectorAll('.needs-validation')
     Array.prototype.slice.call(forms)
         .forEach(function (form) {
             form.addEventListener('submit', function (event) {
-                //Datos para la advertencia de la forma de pago
-                let card = document.querySelector('input[id="tarj"]:checked');
-                let trans = document.querySelector('input[id="trans"]:checked');
-                let warning = document.getElementById("paymentWarning")
-
-                let disabledAccountNro = document.getElementById(`accountNro`).value
-                let cardID = document.getElementById(`cardID`).value
-                let expirationID = document.getElementById(`expirationID`).value
-                let codeId = document.getElementById(`codeID`).value
-
                 if (!form.checkValidity()) {
                     event.preventDefault()
                     event.stopPropagation()
@@ -178,12 +168,22 @@ function showCart() {
                 else {
                     document.getElementById("alert-success").classList.add("show")
                 }
-                //Advertencia forma de pago
-                if (!card && !trans || (disabledAccountNro === "") && (cardID === "" || expirationID === "" || codeId === "")) {
-                    warning.innerHTML = `
-                    <p class="text-danger"><small>Debe seleccionar una forma de pago</small></p>
-                    `
+
+                let trans = document.querySelector('input[id="trans"]:checked');
+                let card = document.querySelector('input[id="tarj"]:checked');
+
+                let disabledAccountNro = document.getElementById(`accountNro`).value
+                let cardID = document.getElementById(`cardID`).value
+                let expirationID = document.getElementById(`expirationID`).value
+                let codeId = document.getElementById(`codeID`).value
+
+                if ((!card && !trans) || (disabledAccountNro === "") && (cardID === "" || expirationID === "" || codeId === "")) {
+                    document.getElementById("btnSelect").className = "btn btn-link is-invalid"
+
+                } else {
+                    document.getElementById("btnSelect").className = "btn btn-link is-valid"
                 }
+
                 form.classList.add('was-validated')
             }, false)
         })
@@ -195,13 +195,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
             cartInfo = resultObj.data
             showCart()
 
-            //Evento input al primer articulo a comprar
+            //Input event to the first item to buy
             let { articles: [{ id }] } = cartInfo
             inputFirstBuy = document.getElementById(`${id}`);
             inputFirstBuy.addEventListener('input', addAmount)
-            console.log(arraySubtotal)
 
-            //Evento input a articulos agregados
+            //Input event to articles added
             let buyProductLocal = localStorage.getItem('buyProduct')
             buyProductLocal = JSON.parse(buyProductLocal)
             if (buyProductLocal) {
