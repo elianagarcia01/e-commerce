@@ -40,7 +40,7 @@ function validateForm(event) {
   if (valorEmail !== "" && valorContraseña !== "" && valorUsuario!== "") {
     window.location.href = "home.html"
     localStorage.setItem("user", valorUsuario);
-
+    localStorage.setItem("email", valorEmail);
   }
 }
 

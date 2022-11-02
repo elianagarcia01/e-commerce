@@ -51,10 +51,57 @@
     </div>
   </nav>
   <main>
+    <br>
+  
     <div class="container">
-      <div class="alert alert-danger text-center" role="alert">
-        <h4 class="alert-heading">Funcionalidad en desarrollo</h4>
-      </div>
+      <form class="needs-validation" id="myProfile">
+        <div class="row d-flex justify-content-center">
+          
+          <div class="d-flex justify-content-between">
+            <h3>Perfil</h3>
+            <img id="imgPreview" src="img/predeterminado.jpg" width="80" alt="predeterminado">
+          </div >
+          <hr>
+          <div class="col-3">
+            <label for="firstName" class="form-label">Primer nombre*
+              <input type="text" class="form-control" size="40" value="" id="firstName">
+              <div class="invalid-feedback">
+                Ingrese su nombre
+              </div>
+            </label>
+
+            <label for="firstSurname" class="form-label">Primer apellido*
+              <input type="text" class="form-control" size="40" id="firstSurname">
+              <div class="invalid-feedback">
+                Ingrese su apellido
+              </div>
+            </label>
+
+            <label for="e-mail" class="form-label">E-mail
+              <input type="email" class="form-control" size="40" id="emailProfile" value=""></label>
+
+            <label for="telephone" class="form-label">Teléfono de contacto*
+              <input type="text" class="form-control" size="40" id="telephone">
+              <div class="invalid-feedback">
+                Ingrese su teléfono de contacto
+              </div>
+            </label>
+          </div>
+          <div class="col-3">
+            <label for="secondName" class="form-label">Segundo nombre
+              <input type="text" class="form-control" size="40" id="secondName"></label>
+
+            <label for="secondSurname" class="form-label">Segundo apellido
+              <input type="text" class="form-control" size="40" id="secondSurname"></label>
+
+            <label for="inputFile" class="form-label">Imagen de perfil
+              <input type="file" class="form-control" id="inputFile" aria-describedby="inputGroupFileAddon04"
+                aria-label="Upload" accept=".jpg, .jpeg, .png"></label>
+          </div>
+          <hr>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </form>
     </div>
   </main>
   <footer class="text-muted">

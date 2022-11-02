@@ -40,8 +40,13 @@ let getJSONData = function (url) {
     });
 }
 
-function removeUser() {
+function signOff() {
   localStorage.removeItem("user");
+  localStorage.removeItem("firstSurname");
+  localStorage.removeItem("firstName");
+  localStorage.removeItem("secondName");
+  localStorage.removeItem("secondSurname");
+  localStorage.removeItem("telephone");
 }
 
 document.getElementById("user").innerHTML = `
@@ -56,8 +61,8 @@ document.getElementById("user").innerHTML = `
         </a>
         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="nombreUsuario">
           <li><a class="dropdown-item" href="cart.html">Mi carrito</a></li>
-          <li><a class="dropdown-item" href="my-profile.html">Mi perfil</a></li>
-          <li onclick="removeUser()"><a class="dropdown-item" href="index.html">Cerrar sesión</a></li>
+          <li id="perfilID"><a class="dropdown-item" href="my-profile.html">Mi perfil</a></li>
+          <li onclick="signOff()"><a class="dropdown-item" href="index.html">Cerrar sesión</a></li>
         </ul>
       </li>
     </ul>
@@ -65,3 +70,7 @@ document.getElementById("user").innerHTML = `
 </div>`
 
 document.getElementById("nombreUsuario").innerHTML = localStorage.getItem("user")
+
+if(!(localStorage.getItem("user"))){
+  document.getElementById("perfilID").innerHTML =`<a class="dropdown-item" href="index.html">Mi perfil</a>`
+}
