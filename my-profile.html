@@ -52,15 +52,15 @@
   </nav>
   <main>
     <br>
-  
+
     <div class="container">
       <form class="needs-validation" id="myProfile">
         <div class="row d-flex justify-content-center">
-          
+
           <div class="d-flex justify-content-between">
             <h3>Perfil</h3>
             <img id="imgPreview" src="img/predeterminado.jpg" width="80" alt="predeterminado">
-          </div >
+          </div>
           <hr>
           <div class="col-3">
             <label for="firstName" class="form-label">Primer nombre*
@@ -96,7 +96,7 @@
 
             <label for="inputFile" class="form-label">Imagen de perfil
               <input type="file" class="form-control" id="inputFile" aria-describedby="inputGroupFileAddon04"
-                aria-label="Upload" accept=".jpg, .jpeg, .png"></label>
+                aria-label="Upload" accept=".jpg, .jpeg, .png" onchange="selectImg()"></label>
           </div>
           <hr>
         </div>

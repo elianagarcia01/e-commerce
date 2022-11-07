@@ -47,6 +47,7 @@ function signOff() {
   localStorage.removeItem("secondName");
   localStorage.removeItem("secondSurname");
   localStorage.removeItem("telephone");
+  localStorage.removeItem("base64data");
 }
 
 document.getElementById("user").innerHTML = `
