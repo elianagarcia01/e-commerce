@@ -41,13 +41,7 @@ let getJSONData = function (url) {
 }
 
 function signOff() {
-  localStorage.removeItem("user");
-  localStorage.removeItem("firstSurname");
-  localStorage.removeItem("firstName");
-  localStorage.removeItem("secondName");
-  localStorage.removeItem("secondSurname");
-  localStorage.removeItem("telephone");
-  localStorage.removeItem("base64data");
+  localStorage.clear()
 }
 
 document.getElementById("user").innerHTML = `
@@ -72,6 +66,6 @@ document.getElementById("user").innerHTML = `
 
 document.getElementById("nombreUsuario").innerHTML = localStorage.getItem("user")
 
-if(!(localStorage.getItem("user"))){
-  document.getElementById("perfilID").innerHTML =`<a class="dropdown-item" href="index.html">Mi perfil</a>`
+if (!(localStorage.getItem("user"))) {
+  document.getElementById("perfilID").innerHTML = `<a class="dropdown-item" href="index.html">Mi perfil</a>`
 }

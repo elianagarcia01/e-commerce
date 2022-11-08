@@ -1,11 +1,11 @@
-let formProfile = document.getElementById("myProfile");
+let firstSurname = document.getElementById("firstSurname");
+let firstName = document.getElementById("firstName");
+let telephone = document.getElementById("telephone");
+let secondName = document.getElementById("secondName");
+let secondSurname = document.getElementById("secondSurname");
 
+let formProfile = document.getElementById("myProfile");
 formProfile.addEventListener("submit", function (e) {
-    let firstSurname = document.getElementById("firstSurname");
-    let firstName = document.getElementById("firstName");
-    let telephone = document.getElementById("telephone");
-    let secondName = document.getElementById("secondName");
-    let secondSurname = document.getElementById("secondSurname");
 
     firstName.classList.remove('is-invalid');
     if (firstName.value === "") {
@@ -42,16 +42,16 @@ formProfile.addEventListener("submit", function (e) {
     }
 })
 
+let reader = new FileReader();
+reader.addEventListener('load', (event) => {
+    document.getElementById("imgPreview").src = event.target.result;
+});
+
 //Function that accesses the image that is saved in the localstorage
 function addImg() {
     let file2 = localStorage.getItem("base64data")
 
     if (file2) {
-        let reader = new FileReader();
-        reader.addEventListener('load', (event) => {
-            document.getElementById("imgPreview").src = event.target.result;
-        });
-
         fetch(file2)
             .then(res => res.blob())
             .then(data => {
@@ -60,25 +60,22 @@ function addImg() {
     }
 }
 
-//Function so that when changing the input file, it shows the image
+//Function so that when changing the input file, it shows the image. Just for preview
 function selectImg() {
     let file = document.getElementById("inputFile").files[0];
-
-    const reader = new FileReader();
-    reader.addEventListener('load', (event) => {
-        document.getElementById("imgPreview").src = event.target.result;
-    });
-
     reader.readAsDataURL(file);
 }
 
-let emailLocal = localStorage.getItem("email");
-emailValue = document.getElementById("emailProfile").value = emailLocal;
+document.addEventListener("DOMContentLoaded", function (e) {
 
-document.getElementById("firstSurname").value = localStorage.getItem("firstSurname");
-document.getElementById("firstName").value = localStorage.getItem("firstName");
-document.getElementById("secondName").value = localStorage.getItem("secondName");
-document.getElementById("secondSurname").value = localStorage.getItem("secondSurname");
-document.getElementById("telephone").value = localStorage.getItem("telephone");
+    let emailLocal = localStorage.getItem("email");
+    emailValue = document.getElementById("emailProfile").value = emailLocal;
 
-addImg()
+    firstSurname.value = localStorage.getItem("firstSurname");
+    firstName.value = localStorage.getItem("firstName");
+    secondName.value = localStorage.getItem("secondName");
+    secondSurname.value = localStorage.getItem("secondSurname");
+    telephone.value = localStorage.getItem("telephone");
+
+    addImg()
+})
