@@ -3,6 +3,7 @@ let firstName = document.getElementById("firstName");
 let telephone = document.getElementById("telephone");
 let secondName = document.getElementById("secondName");
 let secondSurname = document.getElementById("secondSurname");
+let usuario = {};
 
 let formProfile = document.getElementById("myProfile");
 formProfile.addEventListener("submit", function (e) {
@@ -25,20 +26,24 @@ formProfile.addEventListener("submit", function (e) {
         e.preventDefault();
     }
 
-    localStorage.setItem("firstSurname", firstSurname.value);
-    localStorage.setItem("firstName", firstName.value);
-    localStorage.setItem("secondName", secondName.value);
-    localStorage.setItem("secondSurname", secondSurname.value);
-    localStorage.setItem("telephone", telephone.value);
+    if ((firstName.value) && (firstSurname.value) && (telephone.value)) {
+        usuario.primerNombre = firstName.value;
+        usuario.primerApellido = firstSurname.value;
+        usuario.segundoNombre = secondName.value;
+        usuario.segundoApellido = secondSurname.value;
+        usuario.telefono = telephone.value;
+        localStorage.setItem("usuario", JSON.stringify(usuario));
+    }
 
     //When the form is submitted, the img is saved in the localstorage
     let blob = document.getElementById("inputFile").files[0];
     let reader = new FileReader();
 
-    reader.readAsDataURL(blob);
+    if (blob) { reader.readAsDataURL(blob) };
     reader.onloadend = function () {
         let base64data = reader.result;
-        localStorage.setItem("base64data", base64data);
+        usuario.imgProfile = base64data;
+        localStorage.setItem("usuario", JSON.stringify(usuario));
     }
 })
 
@@ -47,16 +52,19 @@ reader.addEventListener('load', (event) => {
     document.getElementById("imgPreview").src = event.target.result;
 });
 
+let persona = JSON.parse(localStorage.getItem("usuario"))
 //Function that accesses the image that is saved in the localstorage
 function addImg() {
-    let file2 = localStorage.getItem("base64data")
+    if (persona) {
+        let imageFile = persona.imgProfile
 
-    if (file2) {
-        fetch(file2)
+        if (imageFile) {
+            fetch(imageFile)
             .then(res => res.blob())
             .then(data => {
                 reader.readAsDataURL(data)
             })
+        }
     }
 }
 
@@ -67,15 +75,15 @@ function selectImg() {
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {
-
     let emailLocal = localStorage.getItem("email");
     emailValue = document.getElementById("emailProfile").value = emailLocal;
 
-    firstSurname.value = localStorage.getItem("firstSurname");
-    firstName.value = localStorage.getItem("firstName");
-    secondName.value = localStorage.getItem("secondName");
-    secondSurname.value = localStorage.getItem("secondSurname");
-    telephone.value = localStorage.getItem("telephone");
-
+    if (persona) {
+        firstSurname.value = persona.primerApellido;
+        firstName.value = persona.primerNombre;
+        secondName.value = persona.segundoNombre;
+        secondSurname.value = persona.segundoApellido;
+        telephone.value = persona.telefono;
+    }
     addImg()
 })
