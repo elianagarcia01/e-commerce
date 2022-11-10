@@ -1,47 +1,32 @@
-var form = document.getElementById("loginForm");
+let btnLogin = document.getElementById("btnLogin")
 
-if (form) {
-  form.addEventListener("submit", validateForm, true);
-}
+let userName = document.getElementById("userName");
+let emailUser = document.getElementById("emailUser");
+let passUser = document.getElementById("passUser");
 
-function validateForm(event) {
-  event.preventDefault()
-  let valorEmail = document.forms["myForm"]["email"].value;
-  let valorContraseña = document.forms["myForm"]["contraseña"].value;
-  let valorUsuario = document.forms["myForm"]["nameUs"].value;
-
-   if (valorUsuario == "") {
-    let inputUser = document.querySelector("#nameUsInput")
-    inputUser.style.border = "1px solid red"
-    let indicacionNameUs = document.getElementById("indicacionNameUs")
-    indicacionNameUs.innerHTML = "Ingresa tu nombre de usuario"
-    indicacionNameUs.style.color = "red"
-    indicacionNameUs.style.fontSize = "13px"
+let loginForm = document.getElementById("loginForm");
+btnLogin.addEventListener("click", function (e) {
+  e.preventDefault();
+  
+  userName.classList.remove('is-invalid');
+  if (userName.value === "") {
+    userName.classList.add('is-invalid'); 
   }
 
-  if (valorEmail == "") {
-    let inputEmail = document.querySelector("#emailInput")
-    inputEmail.style.border = "1px solid red"
-    let indicacionEm = document.getElementById("indicacionEm")
-    indicacionEm.innerHTML = "Ingresa tu Email"
-    indicacionEm.style.color = "red"
-    indicacionEm.style.fontSize = "13px"
-  }
-  if (valorContraseña == "") {
-    let inputPass = document.querySelector("#passInput")
-    inputPass.style.border = "1px solid red"
-
-    let indicacionPass = document.getElementById("indicacionPass")
-    indicacionPass.innerHTML = "Ingresa tu contraseña"
-    indicacionPass.style.color = "red"
-    indicacionPass.style.fontSize = "13px"
+  emailUser.classList.remove('is-invalid');
+  if (emailUser.value === "") {
+    emailUser.classList.add('is-invalid');
   }
 
-  if (valorEmail !== "" && valorContraseña !== "" && valorUsuario!== "") {
+  passUser.classList.remove('is-invalid');
+  if (passUser.value === "") {
+    passUser.classList.add('is-invalid');
+  }
+
+  if ((userName.value) && (emailUser.value) && (passUser.value)) {
     window.location.href = "home.html"
-    localStorage.setItem("user", valorUsuario);
-    localStorage.setItem("email", valorEmail);
+    localStorage.setItem("user", userName.value)
+    localStorage.setItem("email", emailUser.value)
   }
-}
-
+})
 
