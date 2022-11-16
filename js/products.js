@@ -1,7 +1,7 @@
 // variable que accede al catID del local storage para cargar las distinas categorias
 let nroId = localStorage.getItem("catID")
 //Se referencia el origen de los datos en formato Json
-const url = "https://japceibal.github.io/emercado-api/cats_products/" + nroId + ".json"
+const url = PRODUCTS_URL + nroId + EXT_TYPE
 const nameCat= document.getElementById("nameCat")
 
 const ORDER_ASC_BY_COST = "AZ";
